@@ -3,15 +3,15 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\StaffModel;
+use App\Models\BorrowerModel;
 
-class Staff extends BaseController
+class Borrower extends BaseController
 {
-    protected $staffModel;
+    protected $BorrowerModel;
 
     public function __construct()
     {
-        $this->staffModel = new StaffModel();
+        $this->BorrowerModel = new BorrowerModel();
     }
 
     public function index()
@@ -20,10 +20,10 @@ class Staff extends BaseController
             return redirect()->to(base_url())->with('error', 'Anda harus login');
         }
         $data = array(
-            'staff' => $this->staffModel->findAll(),
+            'borrower' => $this->BorrowerModel->findAll(),
         );
 
-        return view('staff/index', $data);
+        return view('borrower/index', $data);
     }
 
     public function add()
@@ -32,7 +32,7 @@ class Staff extends BaseController
             return redirect()->to(base_url())->with('error', 'Anda harus login');
         }
 
-        return view('staff/form');
+        return view('borrower/form');
     }
 
     public function addpro()
@@ -46,7 +46,26 @@ class Staff extends BaseController
         if (!$this->validate([
             'name' => [
                 'rules' => 'required',
+                'errors' => ['required' => 'wajib diisi',],
+            ],
+            'birthdate' => [
+                'rules' => 'required',
                 'errors' => ['required' => 'wajib diisi'],
+            ],
+            'address' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'wajib diisi'],
+            ],
+            'gender' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'wajib diisi'],
+            ],
+            'contact' => [
+                'rules' => 'required|alpha_numeric',
+                'errors' => [
+                    'required' => 'wajib diisi',
+                    'alpha_numeric' => 'khusus angka',
+                ],
             ],
             'email' => [
                 'rules' => 'required|is_unique[staff.email]',
@@ -55,26 +74,21 @@ class Staff extends BaseController
                     'is_unique' => 'email sudah terdaftar'
                 ],
             ],
-            'password' => [
-                'rules' => 'required|alpha_numeric|min_length[6]',
-                'errors' => [
-                    'required' => 'wajib diisi',
-                    'alpha_numeric' => 'khusus huruf dan angka',
-                    'min_length' => 'minimal 6 karakter'
-                ],
-            ],
         ])) {
             $validation = \config\Services::validation();
             session()->setFlashdata('validation', $validation->getErrors());
-            return redirect()->to('staff-add')->withInput();
+            return redirect()->to('borrower-add')->withInput();
         }
 
-        $this->staffModel->save([
+        $this->BorrowerModel->save([
             'name' => $post['name'],
+            'birthdate' => $post['birthdate'],
+            'address' => $post['address'],
+            'gender' => $post['gender'],
+            'contact' => $post['contact'],
             'email' => $post['email'],
-            'password' => md5($post['password']),
         ]);
-        return redirect()->to('staff')->with('info', 'data berhasil ditambah');
+        return redirect()->to('borrower')->with('info', 'data berhasil ditambah');
     }
 
     public function edit($id)
@@ -84,11 +98,11 @@ class Staff extends BaseController
         }
 
         $data = array(
-            'item'  => $this->staffModel->where(['id' => $id])->first(),
+            'item'  => $this->BorrowerModel->where(['id' => $id])->first(),
             'id'    => $id,
         );
 
-        return view('staff/form', $data);
+        return view('borrower/form', $data);
     }
 
     public function editpro()
@@ -98,7 +112,7 @@ class Staff extends BaseController
         }
 
         $post = $this->request->getPost();
-        $datapost = $this->staffModel->where(['id' => $post['id']])->first();
+        $datapost = $this->BorrowerModel->where(['id' => $post['id']])->first();
 
         if ($post['email'] == $datapost['email']) {
             if (!$this->validate([
@@ -106,58 +120,71 @@ class Staff extends BaseController
                     'rules' => 'required',
                     'errors' => ['required' => 'wajib diisi'],
                 ],
-                'password' => [
-                    'rules' => 'required|alpha_numeric|min_length[6]',
+                'contact' => [
+                    'rules' => 'required|alpha_numeric',
                     'errors' => [
                         'required' => 'wajib diisi',
-                        'alpha_numeric' => 'khusus huruf dan angka',
-                        'min_length' => 'minimal 6 karakter'
+                        'alpha_numeric' => 'khusus angka',
                     ],
                 ],
             ])) {
                 $validation = \config\Services::validation();
                 session()->setFlashdata('validation', $validation->getErrors());
-                return redirect()->to('staff-add')->withInput();
+                return redirect()->to('borrower-add')->withInput();
             }
-            $this->staffModel->save([
+            $this->BorrowerModel->save([
                 'id'    => $post['id'],
                 'name' => $post['name'],
-                'password' => md5($post['password']),
+                'contact' => $post['contact'],
             ]);
-            return redirect()->to('staff')->with('info', 'data berhasil ditambah');
+            return redirect()->to('borrower')->with('info', 'data berhasil ditambah');
         } else {
             if (!$this->validate([
                 'name' => [
                     'rules' => 'required',
                     'errors' => ['required' => 'wajib diisi'],
                 ],
+                'birthdate' => [
+                    'rules' => 'required',
+                    'errors' => ['required' => 'wajib diisi'],
+                ],
+                'address' => [
+                    'rules' => 'required',
+                    'errors' => ['required' => 'wajib diisi'],
+                ],
+                'gender' => [
+                    'rules' => 'required',
+                    'errors' => ['required' => 'wajib diisi'],
+                ],
+                'contact' => [
+                    'rules' => 'required|alpha_numeric',
+                    'errors' => [
+                        'required' => 'wajib diisi',
+                        'alpha_numeric' => 'khusus angka',
+                    ],
+                ],
                 'email' => [
-                    'rules' => 'required|is_unique[staff.email]',
+                    'rules' => 'required|is_unique[borrower.email]',
                     'errors' => [
                         'required' => 'wajib diisi',
                         'is_unique' => 'email sudah terdaftar'
                     ],
                 ],
-                'password' => [
-                    'rules' => 'required|alpha_numeric|min_length[6]',
-                    'errors' => [
-                        'required' => 'wajib diisi',
-                        'alpha_numeric' => 'khusus huruf dan angka',
-                        'min_length' => 'minimal 6 karakter'
-                    ],
-                ],
             ])) {
                 $validation = \config\Services::validation();
                 session()->setFlashdata('validation', $validation->getErrors());
-                return redirect()->to('staff-add')->withInput();
+                return redirect()->to('borrower-add')->withInput();
             }
-            $this->staffModel->save([
+            $this->BorrowerModel->save([
                 'id'    => $post['id'],
                 'name' => $post['name'],
+                'birthdate' => $post['birthdate'],
+                'address' => $post['address'],
+                'gender' => $post['gender'],
+                'contact' => $post['contact'],
                 'email' => $post['email'],
-                'password' => md5($post['password']),
             ]);
-            return redirect()->to('staff')->with('info', 'data berhasil ditambah');
+            return redirect()->to('borrower')->with('info', 'data berhasil ditambah');
         }
     }
 
@@ -167,9 +194,9 @@ class Staff extends BaseController
             return redirect()->to(base_url())->with('error', 'Anda Harus Login');
         }
 
-        $delete = $this->staffModel->delete($id);
+        $delete = $this->BorrowerModel->delete($id);
         if ($delete) {
-            return redirect()->to('staff');
+            return redirect()->to('borrower');
         }
     }
 }

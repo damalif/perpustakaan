@@ -38,9 +38,30 @@ $routes->get('/logout', 'Auth::logout');
 $routes->get('/staff', 'Staff::index');
 $routes->get('/staff-add', 'Staff::add');
 $routes->post('/staff-addpro', 'Staff::addpro');
-$routes->get('/staff-edit', 'Staff::edit');
+$routes->get('/staff-edit/(:num)', 'Staff::edit/$1');
 $routes->post('/staff-editpro', 'Staff::editpro');
-$routes->get('/staff-delete', 'Staff::delete');
+$routes->get('/staff-delete/(:num)', 'Staff::delete/$1');
+
+$routes->get('/publisher', 'Publisher::index');
+$routes->get('/publisher-add', 'Publisher::add');
+$routes->post('/publisher-addpro', 'Publisher::addpro');
+$routes->get('/publisher-edit/(:num)', 'Publisher::edit/$1');
+$routes->post('/publisher-editpro', 'Publisher::editpro');
+$routes->get('/publisher-delete/(:num)', 'Publisher::delete/$1');
+
+$routes->get('/category', 'Category::index');
+$routes->get('/category-add', 'Category::add');
+$routes->post('/category-addpro', 'Category::addpro');
+$routes->get('/category-edit/(:num)', 'Category::edit/$1');
+$routes->post('/category-editpro', 'Category::editpro');
+$routes->get('/category-delete/(:num)', 'Category::delete/$1');
+
+$routes->get('/borrower', 'Borrower::index');
+$routes->get('/borrower-add', 'Borrower::add');
+$routes->post('/borrower-addpro', 'Borrower::addpro');
+$routes->get('/borrower-edit/(:num)', 'Borrower::edit/$1');
+$routes->post('/borrower-editpro', 'Borrower::editpro');
+$routes->get('/borrower-delete/(:num)', 'Borrower::delete/$1');
 
 /*
  * --------------------------------------------------------------------

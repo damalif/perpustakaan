@@ -3,15 +3,15 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\StaffModel;
+use App\Models\PublisherModel;
 
-class Staff extends BaseController
+class Publisher extends BaseController
 {
-    protected $staffModel;
+    protected $PublisherModel;
 
     public function __construct()
     {
-        $this->staffModel = new StaffModel();
+        $this->PublisherModel = new PublisherModel();
     }
 
     public function index()
@@ -20,10 +20,10 @@ class Staff extends BaseController
             return redirect()->to(base_url())->with('error', 'Anda harus login');
         }
         $data = array(
-            'staff' => $this->staffModel->findAll(),
+            'publisher' => $this->PublisherModel->findAll(),
         );
 
-        return view('staff/index', $data);
+        return view('publisher/index', $data);
     }
 
     public function add()
@@ -32,7 +32,7 @@ class Staff extends BaseController
             return redirect()->to(base_url())->with('error', 'Anda harus login');
         }
 
-        return view('staff/form');
+        return view('publisher/form');
     }
 
     public function addpro()
@@ -46,35 +46,31 @@ class Staff extends BaseController
         if (!$this->validate([
             'name' => [
                 'rules' => 'required',
+                'errors' => ['required' => 'wajib diisi',],
+            ],
+            'address' => [
+                'rules' => 'required',
                 'errors' => ['required' => 'wajib diisi'],
             ],
-            'email' => [
-                'rules' => 'required|is_unique[staff.email]',
+            'contact' => [
+                'rules' => 'required|alpha_numeric',
                 'errors' => [
                     'required' => 'wajib diisi',
-                    'is_unique' => 'email sudah terdaftar'
-                ],
-            ],
-            'password' => [
-                'rules' => 'required|alpha_numeric|min_length[6]',
-                'errors' => [
-                    'required' => 'wajib diisi',
-                    'alpha_numeric' => 'khusus huruf dan angka',
-                    'min_length' => 'minimal 6 karakter'
+                    'alpha_numeric' => 'khusus angka',
                 ],
             ],
         ])) {
             $validation = \config\Services::validation();
             session()->setFlashdata('validation', $validation->getErrors());
-            return redirect()->to('staff-add')->withInput();
+            return redirect()->to('publisher-add')->withInput();
         }
 
-        $this->staffModel->save([
+        $this->PublisherModel->save([
             'name' => $post['name'],
-            'email' => $post['email'],
-            'password' => md5($post['password']),
+            'address' => $post['address'],
+            'contact' => $post['contact'],
         ]);
-        return redirect()->to('staff')->with('info', 'data berhasil ditambah');
+        return redirect()->to('publisher')->with('info', 'data berhasil ditambah');
     }
 
     public function edit($id)
@@ -84,11 +80,11 @@ class Staff extends BaseController
         }
 
         $data = array(
-            'item'  => $this->staffModel->where(['id' => $id])->first(),
+            'item'  => $this->PublisherModel->where(['id' => $id])->first(),
             'id'    => $id,
         );
 
-        return view('staff/form', $data);
+        return view('publisher/form', $data);
     }
 
     public function editpro()
@@ -98,66 +94,58 @@ class Staff extends BaseController
         }
 
         $post = $this->request->getPost();
-        $datapost = $this->staffModel->where(['id' => $post['id']])->first();
+        $datapost = $this->PublisherModel->where(['id' => $post['id']])->first();
 
-        if ($post['email'] == $datapost['email']) {
+        if ($post['address'] == $datapost['address']) {
             if (!$this->validate([
                 'name' => [
                     'rules' => 'required',
                     'errors' => ['required' => 'wajib diisi'],
                 ],
-                'password' => [
-                    'rules' => 'required|alpha_numeric|min_length[6]',
-                    'errors' => [
-                        'required' => 'wajib diisi',
-                        'alpha_numeric' => 'khusus huruf dan angka',
-                        'min_length' => 'minimal 6 karakter'
-                    ],
+                'address' => [
+                    'rules' => 'required',
+                    'errors' => ['required' => 'wajib diisi'],
                 ],
             ])) {
                 $validation = \config\Services::validation();
                 session()->setFlashdata('validation', $validation->getErrors());
-                return redirect()->to('staff-add')->withInput();
+                return redirect()->to('publisher-add')->withInput();
             }
-            $this->staffModel->save([
+            $this->PublisherModel->save([
                 'id'    => $post['id'],
                 'name' => $post['name'],
-                'password' => md5($post['password']),
+                'contact' => $post['contact'],
             ]);
-            return redirect()->to('staff')->with('info', 'data berhasil ditambah');
+            return redirect()->to('publisher')->with('info', 'data berhasil ditambah');
         } else {
             if (!$this->validate([
                 'name' => [
                     'rules' => 'required',
                     'errors' => ['required' => 'wajib diisi'],
                 ],
-                'email' => [
-                    'rules' => 'required|is_unique[staff.email]',
-                    'errors' => [
-                        'required' => 'wajib diisi',
-                        'is_unique' => 'email sudah terdaftar'
-                    ],
+                'address' => [
+                    'rules' => 'required',
+                    'errors' => ['required' => 'wajib diisi'],
                 ],
-                'password' => [
-                    'rules' => 'required|alpha_numeric|min_length[6]',
+                'contact' => [
+                    'rules' => 'required|alpha_numeric',
                     'errors' => [
                         'required' => 'wajib diisi',
-                        'alpha_numeric' => 'khusus huruf dan angka',
-                        'min_length' => 'minimal 6 karakter'
+                        'alpha_numeric' => 'khusus angka',
                     ],
                 ],
             ])) {
                 $validation = \config\Services::validation();
                 session()->setFlashdata('validation', $validation->getErrors());
-                return redirect()->to('staff-add')->withInput();
+                return redirect()->to('publisher-add')->withInput();
             }
-            $this->staffModel->save([
+            $this->PublisherModel->save([
                 'id'    => $post['id'],
                 'name' => $post['name'],
-                'email' => $post['email'],
-                'password' => md5($post['password']),
+                'address' => $post['address'],
+                'password' => $post['address'],
             ]);
-            return redirect()->to('staff')->with('info', 'data berhasil ditambah');
+            return redirect()->to('publisher')->with('info', 'data berhasil ditambah');
         }
     }
 
@@ -167,9 +155,9 @@ class Staff extends BaseController
             return redirect()->to(base_url())->with('error', 'Anda Harus Login');
         }
 
-        $delete = $this->staffModel->delete($id);
+        $delete = $this->PublisherModel->delete($id);
         if ($delete) {
-            return redirect()->to('staff');
+            return redirect()->to('publisher');
         }
     }
 }

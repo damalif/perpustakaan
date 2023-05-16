@@ -19,7 +19,7 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        <center>Category</center>
+                                        <center>Kategori</center>
                                     </th>
                                     <th>
                                         <center>Tool</center>

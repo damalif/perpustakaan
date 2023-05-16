@@ -19,19 +19,19 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        <center>Name</center>
+                                        <center>Nama</center>
                                     </th>
                                     <th>
-                                        <center>Birthdate</center>
+                                        <center>Tanggal Lahir</center>
                                     </th>
                                     <th>
-                                        <center>Address</center>
+                                        <center>Alamat</center>
                                     </th>
                                     <th>
-                                        <center>Gender</center>
+                                        <center>Jenis Kelamin</center>
                                     </th>
                                     <th>
-                                        <center>Contact</center>
+                                        <center>Kontak</center>
                                     </th>
                                     <th>
                                         <center>Email</center>

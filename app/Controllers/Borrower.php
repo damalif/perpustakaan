@@ -68,7 +68,7 @@ class Borrower extends BaseController
                 ],
             ],
             'email' => [
-                'rules' => 'required|is_unique[staff.email]',
+                'rules' => 'required|is_unique[borrower.email]',
                 'errors' => [
                     'required' => 'wajib diisi',
                     'is_unique' => 'email sudah terdaftar'
@@ -120,22 +120,14 @@ class Borrower extends BaseController
                     'rules' => 'required',
                     'errors' => ['required' => 'wajib diisi'],
                 ],
-                'contact' => [
-                    'rules' => 'required|alpha_numeric',
-                    'errors' => [
-                        'required' => 'wajib diisi',
-                        'alpha_numeric' => 'khusus angka',
-                    ],
-                ],
             ])) {
                 $validation = \config\Services::validation();
                 session()->setFlashdata('validation', $validation->getErrors());
-                return redirect()->to('borrower-add')->withInput();
+                return redirect()->to('borrower-edit/' . $post['id'])->withInput();
             }
             $this->BorrowerModel->save([
                 'id'    => $post['id'],
                 'name' => $post['name'],
-                'contact' => $post['contact'],
             ]);
             return redirect()->to('borrower')->with('info', 'data berhasil ditambah');
         } else {
@@ -173,7 +165,7 @@ class Borrower extends BaseController
             ])) {
                 $validation = \config\Services::validation();
                 session()->setFlashdata('validation', $validation->getErrors());
-                return redirect()->to('borrower-add')->withInput();
+                return redirect()->to('borrower-edit/' . $post['id'])->withInput();
             }
             $this->BorrowerModel->save([
                 'id'    => $post['id'],

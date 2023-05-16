@@ -45,8 +45,11 @@ class Publisher extends BaseController
 
         if (!$this->validate([
             'name' => [
-                'rules' => 'required',
-                'errors' => ['required' => 'wajib diisi',],
+                'rules' => 'required|is_unique[publisher.name]',
+                'errors' => [
+                    'required' => 'wajib diisi',
+                    'is_unique' => 'email sudah terdaftar'
+                ],
             ],
             'address' => [
                 'rules' => 'required',
@@ -109,7 +112,7 @@ class Publisher extends BaseController
             ])) {
                 $validation = \config\Services::validation();
                 session()->setFlashdata('validation', $validation->getErrors());
-                return redirect()->to('publisher-add')->withInput();
+                return redirect()->to('publisher-edit/' . $post['id'])->withInput();
             }
             $this->PublisherModel->save([
                 'id'    => $post['id'],
@@ -137,7 +140,7 @@ class Publisher extends BaseController
             ])) {
                 $validation = \config\Services::validation();
                 session()->setFlashdata('validation', $validation->getErrors());
-                return redirect()->to('publisher-add')->withInput();
+                return redirect()->to('publisher-edit/' . $post['id'])->withInput();
             }
             $this->PublisherModel->save([
                 'id'    => $post['id'],

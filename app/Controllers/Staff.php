@@ -117,7 +117,7 @@ class Staff extends BaseController
             ])) {
                 $validation = \config\Services::validation();
                 session()->setFlashdata('validation', $validation->getErrors());
-                return redirect()->to('staff-add')->withInput();
+                return redirect()->to('staff-edit/' . $post['id'])->withInput();
             }
             $this->staffModel->save([
                 'id'    => $post['id'],
@@ -149,7 +149,7 @@ class Staff extends BaseController
             ])) {
                 $validation = \config\Services::validation();
                 session()->setFlashdata('validation', $validation->getErrors());
-                return redirect()->to('staff-add')->withInput();
+                return redirect()->to('staff-edit/' . $post['id'])->withInput();
             }
             $this->staffModel->save([
                 'id'    => $post['id'],

@@ -51,7 +51,7 @@ class Category extends BaseController
         ])) {
             $validation = \config\Services::validation();
             session()->setFlashdata('validation', $validation->getErrors());
-            return redirect()->to('Category-add')->withInput();
+            return redirect()->to('category-add')->withInput();
         }
 
         $this->CategoryModel->save([
@@ -83,39 +83,21 @@ class Category extends BaseController
         $post = $this->request->getPost();
         $datapost = $this->CategoryModel->where(['id' => $post['id']])->first();
 
-        if ($post['category'] == $datapost['category']) {
-            if (!$this->validate([
-                'category' => [
-                    'rules' => 'required',
-                    'errors' => ['required' => 'wajib diisi'],
-                ],
-            ])) {
-                $validation = \config\Services::validation();
-                session()->setFlashdata('validation', $validation->getErrors());
-                return redirect()->to('Category-add')->withInput();
-            }
-            $this->CategoryModel->save([
-                'id'    => $post['id'],
-                'category' => $post['category'],
-            ]);
-            return redirect()->to('category')->with('info', 'data berhasil ditambah');
-        } else {
-            if (!$this->validate([
-                'category' => [
-                    'rules' => 'required',
-                    'errors' => ['required' => 'wajib diisi'],
-                ],
-            ])) {
-                $validation = \config\Services::validation();
-                session()->setFlashdata('validation', $validation->getErrors());
-                return redirect()->to('Category-add')->withInput();
-            }
-            $this->CategoryModel->save([
-                'id'    => $post['id'],
-                'category' => $post['category'],
-            ]);
-            return redirect()->to('category')->with('info', 'data berhasil ditambah');
+        if (!$this->validate([
+            'category' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'wajib diisi',],
+            ],
+        ])) {
+            $validation = \config\Services::validation();
+            session()->setFlashdata('validation', $validation->getErrors());
+            return redirect()->to('category-edit/' . $post['id'])->withInput();
         }
+
+        $this->CategoryModel->save([
+            'category' => $post['category'],
+        ]);
+        return redirect()->to('category')->with('info', 'data berhasil ditambah');
     }
 
     public function delete($id)

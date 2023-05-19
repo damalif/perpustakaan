@@ -54,20 +54,6 @@ $target_url = ($is_edit) ? "/borrow-editpro" : "/borrow-addpro";
                                 </div>
                             </div>
                             <div class=" field item form-group">
-                                <label class="col-form-label col-md-3 col-sm-3  label-align">Staff</label>
-                                <div class="input-group col-md-6 col-sm-6">
-                                    <select class="form-control <?= (!empty(session()->getFlashdata('validation')['id_staff'])) ? 'is-invalid' : '' ?>" name="id_staff">
-                                        <option value=""></option>
-                                        <?php foreach ($staff as $poin) : ?>
-                                            <option <?= ($poin['id'] == old('id_staff')) ? 'selected' : (($is_edit) ? (($poin['id'] == $item['id_staff']) ? 'selected' : '') : '') ?> value="<?= $poin['id'] ?>"><?= $poin['email'] ?></option>
-                                        <?php endforeach ?>
-                                        <div class="invalid-feedback">
-                                            <?= (!empty(session()->getFlashdata('validation')['id_staff'])) ? session()->getFlashdata('validation')['id_staff'] : '' ?>
-                                        </div>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class=" field item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3  label-align">Waktu Peminjaman</label>
                                 <div class="input-group col-md-6 col-sm-6">
                                     <input type="date" name="release_date" class="form-control <?= (!empty(session()->getFlashdata('validation')['release_date'])) ? 'is-invalid' : '' ?>" placeholder="" value="<?= ($is_edit) ? $item['release_date'] : old('release_date') ?>">
@@ -96,10 +82,6 @@ $target_url = ($is_edit) ? "/borrow-editpro" : "/borrow-addpro";
                             </div>
                             <button class="btn btn-success" style="float: right;"><?= ($is_edit) ? 'Edit' : 'Save' ?></button>
                         </form>
-
-
-
-
                     </div>
                 </div>
             </div>

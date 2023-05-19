@@ -54,6 +54,7 @@
                                             <center>
                                                 <a href="<?= base_url('borrow-edit/') . $item['id'] ?>" class="btn btn-round btn-info btn-sm"><i class="fa fa-pencil"></i></a>
                                                 <a href="<?= base_url('borrow-delete/') . $item['id'] ?>" class="btn btn-round btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                                                <a href="<?= base_url('borrow-return/') . $item['id'] ?>" class="btn btn-round btn-success btn-sm"><i class="fa fa-reply"></i></a>
                                             </center>
                                         </td>
                                     </tr>
